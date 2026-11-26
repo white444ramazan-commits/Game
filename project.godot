@@ -1,0 +1,31 @@
+; Engine configuration file.
+; Character Studio - Godot 4 project
+
+config_version=5
+
+[application]
+
+config/name="Elysia - Character Studio"
+run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.4")
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/handheld/orientation=0
+window/stretch/mode="canvas_items"
+
+[rendering]
+
+renderer/rendering_method="mobile"
+renderer/rendering_method.mobile="mobile"
+environment/defaults/default_clear_color=Color(0.07, 0.08, 0.12, 1)
+anti_aliasing/quality/msaa_3d=2
+textures/default_filters/use_nearest_mipmap_filter=false
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
