@@ -79,6 +79,19 @@ jobs:
         run: |
           godot --headless --editor --path . --quit
 
+      - name: Runtime smoke test
+        run: |
+          mkdir -p build
+          if ! godot --headless --path . --quit-after 8 > build/runtime-smoke.log 2>&1; then
+            cat build/runtime-smoke.log
+            exit 1
+          fi
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid assignment|Failed loading resource" build/runtime-smoke.log; then
+            cat build/runtime-smoke.log
+            exit 1
+          fi
+          cat build/runtime-smoke.log
+
       - name: Export APK
         run: |
           mkdir -p build
