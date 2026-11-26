@@ -14,6 +14,7 @@ var eye_nodes: Array[MeshInstance3D] = []
 var height_value := 1.0
 var bust_value := 1.0
 var hip_value := 1.0
+var glute_value := 1.0
 var waist_value := 1.0
 var outfit_index := 0
 var face_style := 0
@@ -101,6 +102,8 @@ func _create_avatar() -> void:
     # Body: deliberately stylized procedural forms; the starter outfit is opaque.
     parts["torso"] = _sphere(avatar_root, "Torso", Vector3(0, 1.88, 0), Vector3(0.45, 0.69, 0.29), SKIN)
     parts["hips"] = _sphere(avatar_root, "Hips", Vector3(0, 1.18, 0), Vector3(0.55, 0.43, 0.34), SKIN)
+    parts["glute_left"] = _sphere(avatar_root, "GluteLeft", Vector3(-0.22, 1.14, -0.18), Vector3(0.29, 0.31, 0.23), SKIN)
+    parts["glute_right"] = _sphere(avatar_root, "GluteRight", Vector3(0.22, 1.14, -0.18), Vector3(0.29, 0.31, 0.23), SKIN)
     parts["bust_left"] = _sphere(avatar_root, "BustLeft", Vector3(-0.21, 2.13, 0.20), Vector3(0.22, 0.24, 0.16), SKIN)
     parts["bust_right"] = _sphere(avatar_root, "BustRight", Vector3(0.21, 2.13, 0.20), Vector3(0.22, 0.24, 0.16), SKIN)
 
@@ -214,6 +217,8 @@ func _apply_shape() -> void:
     parts["hips"].scale.x = 0.55 * hip_value
     parts["thigh_left"].scale.x = 0.21 * hip_value
     parts["thigh_right"].scale.x = 0.21 * hip_value
+    parts["glute_left"].scale = Vector3(0.29 * glute_value, 0.31 * glute_value, 0.23 * glute_value)
+    parts["glute_right"].scale = Vector3(0.29 * glute_value, 0.31 * glute_value, 0.23 * glute_value)
     parts["bust_left"].scale = Vector3(0.22 * bust_value, 0.24 * bust_value, 0.16 * bust_value)
     parts["bust_right"].scale = Vector3(0.22 * bust_value, 0.24 * bust_value, 0.16 * bust_value)
 
@@ -323,6 +328,10 @@ func _build_ui() -> void:
     )
     _add_slider(controls, "Ширина бёдер", 0.80, 1.40, hip_value, func(value: float):
         hip_value = value
+        _apply_shape()
+    )
+    _add_slider(controls, "Объём ягодиц", 0.70, 1.50, glute_value, func(value: float):
+        glute_value = value
         _apply_shape()
     )
     _add_slider(controls, "Талия", 0.72, 1.16, waist_value, func(value: float):
@@ -463,6 +472,7 @@ func _save_profile() -> void:
     config.set_value("avatar", "height", height_value)
     config.set_value("avatar", "bust", bust_value)
     config.set_value("avatar", "hips", hip_value)
+    config.set_value("avatar", "glutes", glute_value)
     config.set_value("avatar", "waist", waist_value)
     config.set_value("avatar", "outfit", outfit_index)
     config.set_value("avatar", "face", face_style)
@@ -482,6 +492,7 @@ func _load_profile() -> void:
     height_value = float(config.get_value("avatar", "height", 1.0))
     bust_value = float(config.get_value("avatar", "bust", 1.0))
     hip_value = float(config.get_value("avatar", "hips", 1.0))
+    glute_value = float(config.get_value("avatar", "glutes", 1.0))
     waist_value = float(config.get_value("avatar", "waist", 1.0))
     outfit_index = int(config.get_value("avatar", "outfit", 0))
     face_style = int(config.get_value("avatar", "face", 0))
