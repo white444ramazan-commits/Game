@@ -69,7 +69,7 @@ func _apply_pose_transform() -> void:
         Vector3(1.0, 0.0, 0.0),
         Vector3(0.0, 1.0, 0.0)
     )
-    transform = Transform3D(Basis(Vector3.UP, yaw_angle) * lying_basis, Vector3(-1.55, 0.94, 0.0))
+    transform = Transform3D(Basis(Vector3.UP, yaw_angle) * lying_basis, Vector3(-1.55, 1.11, 0.0))
     scale = Vector3.ONE * height_value
 
 
@@ -138,11 +138,13 @@ func _build_body() -> void:
     for i in range(profile.size()):
         var p := profile[i]
         var width_scale := 1.0
+        var depth_scale := 1.0
         if p.x < 1.12:
             width_scale = hip_value
+            depth_scale = glute_value
         elif p.x < 1.72:
             width_scale = waist_value
-        profile[i] = Vector4(p.x, p.y * width_scale, p.z, p.w)
+        profile[i] = Vector4(p.x, p.y * width_scale, p.z * depth_scale, p.w)
     _create_loft("ContinuousTorso", profile, skin_material, 64, 5)
 
     _ellipsoid(self, "ChestLeft", Vector3(-0.205, 2.04, 0.205),
@@ -375,12 +377,13 @@ func _tube(part_name: String, points: Array[Vector3], radii: Array[float], mater
             var b := (i + 1) * radial_segments + j
             var c := (i + 1) * radial_segments + next_j
             var d := i * radial_segments + next_j
+            # Reverse winding so normals point outward from the tube.
             st.add_index(a)
+            st.add_index(c)
             st.add_index(b)
-            st.add_index(c)
             st.add_index(a)
-            st.add_index(c)
             st.add_index(d)
+            st.add_index(c)
     st.generate_normals()
     var node := MeshInstance3D.new()
     node.name = part_name
