@@ -84,7 +84,6 @@ jobs:
           mkdir -p build
           godot --headless --verbose --path . --export-debug "Android" build/CharacterStudio.apk
           test -s build/CharacterStudio.apk
-          file build/CharacterStudio.apk
           ls -lh build/CharacterStudio.apk
 
       - name: Upload APK artifact
